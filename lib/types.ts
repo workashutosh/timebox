@@ -5,7 +5,7 @@ export interface Task {
   timeLeft: number;
   isActive: boolean;
   isCompleted: boolean;
-  userId?: string;
-  priority?: "Low" | "Medium" | "High";
-  scheduledTime?: string; // ISO string (e.g., "2025-03-01T14:30:00Z")
+  priority: "Low" | "Medium" | "High";
+  scheduledTime: string; // Stored as ISO string in Firestore
+  userId: string;
 }

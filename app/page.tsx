@@ -7,6 +7,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { auth } from "@/lib/firebase";
 import { signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 import { useRouter } from "next/navigation";
+import { FcGoogle } from "react-icons/fc";
 
 export default function Home() {
   const [user, setUser] = useState<any>(null);
@@ -16,7 +17,7 @@ export default function Home() {
     const unsubscribe = auth.onAuthStateChanged((user) => {
       setUser(user);
       if (user) {
-        router.push("/dashboard"); // Redirect to dashboard if signed in
+        router.push("/dashboard");
       }
     });
     return () => unsubscribe();
@@ -32,26 +33,38 @@ export default function Home() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-white to-indigo-100 flex flex-col items-center justify-center p-6">
+    <div className="min-h-screen bg-gradient-to-br from-indigo-100 via-purple-50 to-indigo-200 flex flex-col items-center justify-center p-4 relative overflow-hidden">
+      {/* Subtle Background Pattern */}
+      <div className="absolute inset-0 bg-[url('/pattern.svg')] opacity-50 z-0"></div>
+
       {/* Hero Section */}
       <motion.div
         initial={{ opacity: 0, y: -50 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8 }}
-        className="text-center max-w-3xl mb-12"
+        className="text-center max-w-3xl mb-8 z-10"
       >
-        <h1 className="text-5xl md:text-6xl font-bold text-indigo-900 mb-4">
-          Master Your Time with Timebox
+        <h1 className="text-4xl md:text-5xl font-extrabold text-indigo-900 mb-3 drop-shadow-md">
+          Master Your Time with <span className="text-indigo-600">Timebox</span>
         </h1>
-        <p className="text-lg md:text-xl text-gray-700 mb-6">
-          Boost productivity with a method backed by Harvard experts. Focus smarter, achieve more—start for free today.
+        <p className="text-md md:text-lg text-gray-700 mb-4 font-light italic drop-shadow-sm">
+          Unleash your productivity with Harvard-backed timeboxing. Focus smarter, achieve more—start your journey today.
         </p>
-        <Button
-          onClick={signInWithGoogle}
-          className="bg-indigo-600 hover:bg-indigo-700 text-white px-8 py-3 rounded-full text-lg"
-        >
-          Try for Free
-        </Button>
+        <div className="flex gap-3 justify-center">
+          <Button
+            onClick={signInWithGoogle}
+            className="bg-indigo-700 hover:bg-indigo-800 text-white px-6 py-2 rounded-full text-md shadow-lg transition-all duration-300 flex items-center gap-2"
+          >
+            <FcGoogle className="w-5 h-5" /> Sign in with Google
+          </Button>
+          <Button
+            onClick={signInWithGoogle}
+            variant="outline"
+            className="border-indigo-700 text-indigo-700 hover:bg-indigo-100 hover:text-indigo-800 px-6 py-2 rounded-full text-md shadow-md transition-all duration-300"
+          >
+            Try for Free
+          </Button>
+        </div>
       </motion.div>
 
       {/* Features Section */}
@@ -59,34 +72,34 @@ export default function Home() {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 0.5, duration: 1 }}
-        className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl"
+        className="grid grid-cols-1 md:grid-cols-3 gap-4 max-w-5xl z-10"
       >
-        <Card className="shadow-lg hover:shadow-xl transition-shadow">
-          <CardHeader>
-            <CardTitle className="text-indigo-800">Harvard’s Timeboxing</CardTitle>
+        <Card className="bg-white/80 backdrop-blur-sm shadow-md hover:shadow-xl transition-shadow rounded-lg">
+          <CardHeader className="p-4">
+            <CardTitle className="text-indigo-800 text-lg font-semibold">Harvard's Timeboxing</CardTitle>
           </CardHeader>
-          <CardContent>
-            <p className="text-gray-600">
+          <CardContent className="p-4">
+            <p className="text-gray-600 text-sm">
               Break your day into focused blocks. Inspired by Harvard research, Timebox helps you prioritize and conquer tasks efficiently.
             </p>
           </CardContent>
         </Card>
-        <Card className="shadow-lg hover:shadow-xl transition-shadow">
-          <CardHeader>
-            <CardTitle className="text-indigo-800">Effortless Task Management</CardTitle>
+        <Card className="bg-white/80 backdrop-blur-sm shadow-md hover:shadow-xl transition-shadow rounded-lg">
+          <CardHeader className="p-4">
+            <CardTitle className="text-indigo-800 text-lg font-semibold">Effortless Task Management</CardTitle>
           </CardHeader>
-          <CardContent>
-            <p className="text-gray-600">
+          <CardContent className="p-4">
+            <p className="text-gray-600 text-sm">
               Add tasks, set durations, and track progress with a sleek, intuitive interface. Productivity has never felt this elegant.
             </p>
           </CardContent>
         </Card>
-        <Card className="shadow-lg hover:shadow-xl transition-shadow">
-          <CardHeader>
-            <CardTitle className="text-indigo-800">Sync Across Devices</CardTitle>
+        <Card className="bg-white/80 backdrop-blur-sm shadow-md hover:shadow-xl transition-shadow rounded-lg">
+          <CardHeader className="p-4">
+            <CardTitle className="text-indigo-800 text-lg font-semibold">Sync Across Devices</CardTitle>
           </CardHeader>
-          <CardContent>
-            <p className="text-gray-600">
+          <CardContent className="p-4">
+            <p className="text-gray-600 text-sm">
               Sign in with Google and access your tasks anywhere, anytime. Your focus follows you seamlessly.
             </p>
           </CardContent>
@@ -98,7 +111,7 @@ export default function Home() {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 1, duration: 1 }}
-        className="mt-12 text-gray-500 text-sm"
+        className="mt-8 text-gray-500 text-xs z-10"
       >
         <p>© 2025 Timebox. Inspired by the best productivity minds.</p>
       </motion.footer>

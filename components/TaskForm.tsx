@@ -8,7 +8,7 @@ import DatePicker from "react-datepicker";
 import { Task } from "@/lib/types";
 
 interface TaskFormProps {
-  onAddTask: (task: Omit<Task, "id" | "timeLeft" | "isActive" | "isCompleted"> & { scheduledTime?: Date }) => void;
+  onAddTask: (task: Omit<Task, "id" | "timeLeft" | "isActive" | "isCompleted" | "scheduledTime"> & { scheduledTime?: Date | undefined }) => void;
 }
 
 export default function TaskForm({ onAddTask }: TaskFormProps) {
@@ -20,7 +20,14 @@ export default function TaskForm({ onAddTask }: TaskFormProps) {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!name || !duration) return;
-    onAddTask({ name, duration: parseInt(duration), priority, scheduledTime });
+    const task: Omit<Task, "id" | "timeLeft" | "isActive" | "isCompleted" | "scheduledTime"> & { scheduledTime?: Date | undefined } = {
+      name,
+      duration: parseInt(duration),
+      priority,
+      scheduledTime: scheduledTime ?? undefined,
+      userId: '', // Add userId field here with appropriate value
+    };
+    onAddTask(task);
     setName("");
     setDuration("");
     setPriority("Medium");
@@ -57,7 +64,7 @@ export default function TaskForm({ onAddTask }: TaskFormProps) {
       <div className="flex gap-4 items-center">
         <DatePicker
           selected={scheduledTime}
-          onChange={(date: Date) => setScheduledTime(date)}
+          onChange={(date: Date | null) => setScheduledTime(date)}
           showTimeSelect
           timeIntervals={15}
           dateFormat="MMMM d, yyyy h:mm aa"

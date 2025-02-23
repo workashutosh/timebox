@@ -106,7 +106,12 @@ export default function Dashboard() {
     setIsPomodoroRunning(true);
   };
 
-  const addTask = async (newTask: Omit<Task, "id" | "timeLeft" | "isActive" | "isCompleted" | "priority" | "scheduledTime"> & { scheduledTime?: Date }) => {
+  interface FirebaseError {
+    code: string;
+    message: string;
+  }
+  
+  const addTask = async (newTask: Omit<Task, "id" | "timeLeft" | "isActive" | "isCompleted" | "scheduledTime"> & { scheduledTime?: Date }) => {
     if (!user) return;
     const task = {
       ...newTask,
@@ -120,27 +125,42 @@ export default function Dashboard() {
     try {
       await addDoc(collection(db, "tasks"), task);
     } catch (error) {
-      console.error("Error adding task:", error.message, error.code);
+      if ((error as FirebaseError).code) {
+        const firebaseError = error as FirebaseError;
+        console.error("Error adding task:", firebaseError.message, firebaseError.code);
+      } else {
+        console.error("Unknown error adding task:", error);
+      }
     }
   };
-
+  
   const updateTask = async (id: string, updates: Partial<Task>) => {
     if (!user) return;
     const taskRef = doc(db, "tasks", id);
     try {
       await updateDoc(taskRef, updates);
     } catch (error) {
-      console.error("Error updating task:", error.message, error.code);
+      if ((error as FirebaseError).code) {
+        const firebaseError = error as FirebaseError;
+        console.error("Error updating task:", firebaseError.message, firebaseError.code);
+      } else {
+        console.error("Unknown error updating task:", error);
+      }
     }
   };
-
+  
   const deleteTask = async (id: string) => {
     if (!user) return;
     const taskRef = doc(db, "tasks", id);
     try {
       await deleteDoc(taskRef);
     } catch (error) {
-      console.error("Error deleting task:", error.message, error.code);
+      if ((error as FirebaseError).code) {
+        const firebaseError = error as FirebaseError;
+        console.error("Error deleting task:", firebaseError.message, firebaseError.code);
+      } else {
+        console.error("Unknown error deleting task:", error);
+      }
     }
   };
 
